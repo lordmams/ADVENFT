@@ -3,30 +3,26 @@ namespace App\Controller\Supporting;
 
 use DateTime;
 use DateTimeInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 
 trait ControllerTrait
 {
-    
-       public function __construct(
-      
-        private EntityManagerInterface $em,
-    ) { }
 
-    public function convertTime(string $date): DateTimeInterface{
+    public function convertTime(ManagerRegistry $doctrine, string $date): DateTimeInterface{
         $newDate = DateTime::createFromFormat('Y-m-d H:i:s',$date);
         return $newDate;
     }
 
-    public function addAndSave($entity){   
-         $this->em->persist($entity);
-         $this->em->flush();
+    public function addAndSave(ManagerRegistry $doctrine, $entity){
+        $em = $doctrine->getManager();
+        $em->persist($entity);
+        $em->flush();
     }
 
-    public function deleteAndSave($entity){ 
-       
-          $this->em->remove($entity);
-          $this->em->flush();
+    public function deleteAndSave(ManagerRegistry $doctrine, $entity){
+        $em = $doctrine->getManager();
+        $em->remove($entity);
+        $em->flush();
     }
 }
