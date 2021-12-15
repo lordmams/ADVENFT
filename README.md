@@ -71,6 +71,11 @@ Data à transmettre :
 }
 ```
 
+### Supprimer un calendrier
+
+Route : `DELETE /api/calendar/{id}/edit`
+
+
 ### Évènement
 
 -Liste des évènements : `/api/event/list`
