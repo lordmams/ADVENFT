@@ -6,45 +6,57 @@ use App\Entity\Calendar;
 use App\Entity\Event;
 use App\Entity\User;
 use App\Controller\Supporting\ControllerTrait;
+use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class UserController extends AbstractController
 {
     use ControllerTrait;
 
+
+    private function toArrayResponse(ManagerRegistry $doctrine, $user){
+        $entityManager = $doctrine->getManager();
+        return [
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'calendars' => $entityManager->getRepository(User::class)->findCalendarUser($user)
+        ];
+    }
+
     #[Route('/api/user', name: 'api_user', methods: ['GET'])]
-    public function index(Request $request): Response
+    public function index(ManagerRegistry $doctrine, Request $request): Response
     {
         $tokenUser = $request->headers->get('Authorization');
 
-        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy([
+        $entityManager = $doctrine->getManager();
+        $user = $entityManager->getRepository(User::class)->findOneBy([
             'apiToken' => $tokenUser
         ]);
 
-        // usually you'll want to make sure the user is authenticated first,
-        // see "Authorization" below
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->toArrayResponse($doctrine, $user);
 
-//        // returns your User object, or null if the user is not authenticated
-//        // use inline documentation to tell your editor your exact User class
-//        /** @var \App\Entity\User $user */
-//        $user = $this->getUser();
-
-        // Call whatever methods you've added to your User class
-        // For example, if you added a getFirstName() method, you can use that.
-        return $this->json(['data' => $user], $status = 200, $headers = []);
+        return $this->json(['data' => $user], $status = 200, $headers = [], [
+            ObjectNormalizer::ENABLE_MAX_DEPTH => true,
+//            ObjectNormalizer::IGNORED_ATTRIBUTES => ['event'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object){
+                return $object->getId();
+            }
+        ]);
     }
 
-    #[Route('/api/user/{id}/delete', name: 'api_user', methods: ['DELETE'])]
-    public function deleteUser(Request $request, int $id){
+    #[Route('/api/user/{id}/delete', name: 'api_user_delete', methods: ['DELETE'])]
+    public function deleteUser(ManagerRegistry $doctrine, Request $request, int $id){
         $userId = $id;
 
-        $user = $this->getDoctrine()->getRepository(Event::class)->find($userId);
+        $entityManager = $doctrine->getManager();
+        $user = $entityManager->getRepository(User::class)->find($userId);
 
-        $this->deleteAndSave($user);
+        $this->deleteAndSave($doctrine, $user);
 
         return $this->json(['data' => 'User ' . $userId . ' deleted!'], $status = 200, $headers = []);
     }

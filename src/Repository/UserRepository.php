@@ -36,6 +36,28 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    public function findCalendarUser(User $user){
+        $userId = $user->getId();
+
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT 
+                c.id, 
+                c.title,
+                c.hasDonation, 
+                e.title as eventTitle, 
+                e.startDate, 
+                e.endDate
+            FROM App\Entity\Calendar c
+            JOIN App\Entity\User u
+            JOIN App\Entity\Event e
+            WHERE u.id = :id'
+        )->setParameter('id', $userId);
+
+        return $query->getResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
