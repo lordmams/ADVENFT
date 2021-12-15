@@ -37,7 +37,7 @@ class Calendar
      * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="calendars")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $eventId;
+    private $event;
 
     public function getId(): ?int
     {
@@ -80,14 +80,14 @@ class Calendar
         return $this;
     }
 
-    public function getEventId(): ?Event
+    public function getEvent(): ?Event
     {
-        return $this->eventId;
+        return $this->event;
     }
 
-    public function setEventId(?Event $eventId): self
+    public function setEventId(?Event $event): self
     {
-        $this->eventId = $eventId;
+        $this->event = $event;
 
         return $this;
     }
