@@ -29,7 +29,7 @@ class Calendar
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="calendars")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      * @Groups({"calendar_list"})
      */
     private $user;
