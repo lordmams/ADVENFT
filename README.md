@@ -56,3 +56,18 @@ Data à transmettre :
     "hasDonation": "1"
 }
 ```
+- Liste des calendriers : `/api/calendar`
+- Créer un calendrier : `/api/calendar/new`
+
+### Évènement
+
+-Liste des évènements : `/api/event/list`
+-Crée un évènement : `/api/event/new` 
+Data à transmettre:
+```json{
+    "title": "Le titre du calendrier",
+    "startDate": "date",
+    "endDate": "date"
+}
+```
+
