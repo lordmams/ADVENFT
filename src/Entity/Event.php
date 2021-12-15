@@ -35,13 +35,13 @@ class Event
     private $endDate;
 
     /**
-     * @ORM\OneToMany(targetEntity=Calendar::class, mappedBy="eventId")
+     * @ORM\OneToMany(targetEntity=Calendar::class, mappedBy="event")
      */
-    private $calendars;
+    private $Calendars;
 
     public function __construct()
     {
-        $this->calendars = new ArrayCollection();
+        $this->Calendars = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -81,6 +81,36 @@ class Event
     public function setEndDate(\DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Calendar[]
+     */
+    public function getCalendars(): Collection
+    {
+        return $this->Calendars;
+    }
+
+    public function addCalendar(Calendar $calendar): self
+    {
+        if (!$this->Calendars->contains($calendar)) {
+            $this->Calendars[] = $calendar;
+            $calendar->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCalendar(Calendar $calendar): self
+    {
+        if ($this->Calendars->removeElement($calendar)) {
+            // set the owning side to null (unless already changed)
+            if ($calendar->getEvent() === $this) {
+                $calendar->setEvent(null);
+            }
+        }
 
         return $this;
     }
