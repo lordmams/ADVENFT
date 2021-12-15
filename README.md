@@ -4,7 +4,7 @@
 
 ### Liste des calendriers
 
-Route : `/api/calendar`
+Route : `GET /api/calendar`
 
 Data :
 
@@ -45,7 +45,7 @@ Data :
 
 ### Créer un calendrier
 
-Route : `/api/calendar/new`
+Route : `POST /api/calendar/new`
 
 Data à transmettre :
 
@@ -56,8 +56,21 @@ Data à transmettre :
     "hasDonation": "1"
 }
 ```
-- Liste des calendriers : `/api/calendar`
-- Créer un calendrier : `/api/calendar/new`
+
+### Éditer un calendrier
+
+Route : `PATCH /api/calendar/edit`
+
+Data à transmettre :
+
+```json
+{
+    "id": "1",
+    "title": "Le titre du calendrier",
+    "eventId": "1",
+    "hasDonation": "1"
+}
+```
 
 ### Évènement
 
