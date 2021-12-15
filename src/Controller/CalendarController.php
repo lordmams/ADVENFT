@@ -66,4 +66,33 @@ class CalendarController extends AbstractController
             422
         );
     }
+
+    #[Route('/api/calendar/edit', name: 'calendar_edit', methods: ['PATCH'])]
+    #[IsGranted('ROLE_USER')]
+    public function edit(
+        #[CurrentUser] ?User $user,
+        Request $request,
+    ): JsonResponse {
+        $data = \json_decode($request->getContent(), true);
+
+        $calendar = new Calendar();
+        $form = $this->createForm(CalendarType::class, $calendar);
+
+        $form->submit($data, false);
+        if ($form->isValid()) {
+            $this->em->persist($calendar);
+            $this->em->flush();
+
+            return $this->json([
+                'message' => 'ok',
+            ], 200);
+        }
+
+        return $this->json(
+            [
+                'message' => (string) $form->getErrors(true, true),
+            ],
+            422
+        );
+    }
 }
