@@ -24,7 +24,8 @@ class UserController extends AbstractController
         return [
             'id' => $user->getId(),
             'email' => $user->getEmail(),
-            'calendars' => $entityManager->getRepository(User::class)->findCalendarUser($user)
+            'calendars' => $entityManager->getRepository(User::class)->findCalendarUser($user),
+            'donations' => $entityManager->getRepository(User::class)->findDonationUser($user)
         ];
     }
 

@@ -16,7 +16,8 @@ class EventController extends AbstractController
 
     use ControllerTrait;
 
-    #[Route('/event/new', name: 'create_event')]
+    #[Route('/api/event/new', name: 'create_event')]
+     #[IsGranted('ROLE_USER')]
     public function createEvent(Request $request): Response
     {
 
@@ -29,12 +30,12 @@ class EventController extends AbstractController
        
         return $this->json([
             'message' => 'event has been created',
-            'status' => '200',
             'eventId' =>$event->getId(),
-        ]);
+        ],200);
     }
 
-    #[Route('/event/list', name: 'get_event_list')]
+    #[Route('/api/event/list', name: 'get_event_list')]
+    #[IsGranted('ROLE_USER')]
     public function getEventList(EventRepository $eventRepository): Response
     {
 
@@ -42,10 +43,11 @@ class EventController extends AbstractController
        
         return $this->json([
             'eventList' =>$eventList,
-        ]);
+        ], 200);
     }
 
-    #[Route('/event/{id}/delete', name: 'delete_event')]
+    #[Route('/api/event/{id}/delete', name: 'delete_event')]
+    #[IsGranted('ROLE_USER')]
     public function deleteEvent(Event $event): Response
     {
 

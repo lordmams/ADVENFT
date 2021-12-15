@@ -22,6 +22,7 @@ class EventRepository extends ServiceEntityRepository
 
     public function findEventList(){
         $qb = $this->createQueryBuilder('e')
+            ->select('e.id', 'e.title')
             ->orderBy('e.title', 'ASC')
             ->getQuery()
             ->getResult();
