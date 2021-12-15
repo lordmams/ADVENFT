@@ -44,7 +44,7 @@ class CalendarController extends AbstractController
         Request $request,
         Calendar|null $calendar = null
     ): JsonResponse {
-        $data = \json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true)['data'];
 
         if ($calendar === null) {
             $calendar = new Calendar();
