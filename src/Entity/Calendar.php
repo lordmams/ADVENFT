@@ -6,6 +6,7 @@ use App\Repository\CalendarRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CalendarRepository::class)
@@ -16,28 +17,33 @@ class Calendar
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"calendar_list"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"calendar_list"})
      */
     private $title;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="calendars")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"calendar_list"})
      */
     private $user;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"calendar_list"})
      */
     private $hasDonation;
 
     /**
      * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="Calendars")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"calendar_list"})
      */
     private $event;
 
