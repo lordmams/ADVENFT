@@ -37,14 +37,19 @@ class CalendarController extends AbstractController
     }
 
     #[Route('/api/calendar/new', name: 'calendar_new')]
+    #[Route('/api/calendar/{id}/edit', name: 'calendar_edit', methods: ['PATCH'])]
     #[IsGranted('ROLE_USER')]
-    public function new(
+    public function newOrEdit(
         #[CurrentUser] ?User $user,
         Request $request,
+        Calendar|null $calendar = null
     ): JsonResponse {
         $data = \json_decode($request->getContent(), true);
 
-        $calendar = new Calendar();
+        if ($calendar === null) {
+            $calendar = new Calendar();
+        }
+
         $form = $this->createForm(CalendarType::class, $calendar);
 
         $form->submit($data);
@@ -67,32 +72,21 @@ class CalendarController extends AbstractController
         );
     }
 
-    #[Route('/api/calendar/edit', name: 'calendar_edit', methods: ['PATCH'])]
+    #[Route('/api/calendar/{id}/delete', name: 'calendar_delete', methods: ['DELETE'])]
     #[IsGranted('ROLE_USER')]
-    public function edit(
+    public function delete(
         #[CurrentUser] ?User $user,
         Request $request,
+        Calendar $calendar
     ): JsonResponse {
-        $data = \json_decode($request->getContent(), true);
-
-        $calendar = new Calendar();
-        $form = $this->createForm(CalendarType::class, $calendar);
-
-        $form->submit($data, false);
-        if ($form->isValid()) {
-            $this->em->persist($calendar);
-            $this->em->flush();
-
-            return $this->json([
-                'message' => 'ok',
-            ], 200);
-        }
+        $this->em->remove($calendar);
+        $this->em->flush();
 
         return $this->json(
             [
-                'message' => (string) $form->getErrors(true, true),
+                'message' => 'ok',
             ],
-            422
+            200
         );
     }
 }

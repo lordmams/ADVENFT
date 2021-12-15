@@ -52,22 +52,21 @@ Data à transmettre :
 ```json
 {
     "title": "Le titre du calendrier",
-    "eventId": "1",
+    "event": "1",
     "hasDonation": "1"
 }
 ```
 
 ### Éditer un calendrier
 
-Route : `PATCH /api/calendar/edit`
+Route : `PATCH /api/calendar/{id}/edit`
 
 Data à transmettre :
 
 ```json
 {
-    "id": "1",
     "title": "Le titre du calendrier",
-    "eventId": "1",
+    "event": "1",
     "hasDonation": "1"
 }
 ```
