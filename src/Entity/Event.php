@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,16 @@ class Event
      * @ORM\Column(type="date")
      */
     private $endDate;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Calendar::class, mappedBy="eventId")
+     */
+    private $calendars;
+
+    public function __construct()
+    {
+        $this->calendars = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
