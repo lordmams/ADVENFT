@@ -6,6 +6,7 @@ use App\Entity\Calendar;
 use App\Entity\Event;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,7 +22,7 @@ class CalendarType extends AbstractType
                     new NotBlank(),
                 ],
             ])
-            ->add('hasDonation', TextType::class, [
+            ->add('hasDonation', CheckboxType::class, [
                 'constraints' => [
                     new NotBlank(),
                 ],
