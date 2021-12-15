@@ -42,8 +42,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $calendars;
 
+    /** *
+     * @ORM\OneToMany(targetEntity=Donation::class, mappedBy="user")
+     */
+    private $donations;
+
     public function __construct()
     {
+        $this->donations = new ArrayCollection();
         $this->calendars = new ArrayCollection();
     }
 
@@ -131,6 +137,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->calendars[] = $calendar;
             $calendar->setUser($this);
         }
+        return $this;
+    }
+    /** 
+     * @return Collection|Donation[]
+     */
+
+    public function getDonations(): Collection
+    {
+        return $this->donations;
+    }
+
+    public function addDonation(Donation $donation): self
+    {
+        if (!$this->donations->contains($donation)) {
+            $this->donations[] = $donation;
+            $donation->setUser($this);
+        }
 
         return $this;
     }
@@ -141,6 +164,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($calendar->getUser() === $this) {
                 $calendar->setUser(null);
+            }
+        }
+        return $this;
+    }
+
+    public function removeDonation(Donation $donation): self
+    {
+        if ($this->donations->removeElement($donation)) {
+            // set the owning side to null (unless already changed)
+            if ($donation->getUser() === $this) {
+                $donation->setUser(null);
             }
         }
 
