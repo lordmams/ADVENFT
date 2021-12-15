@@ -28,7 +28,9 @@ class EventController extends AbstractController
         $this->addAndSave($event);
        
         return $this->json([
-            'event' =>$event,
+            'message' => 'event has been created',
+            'status' => '200',
+            'eventId' =>$event->getId(),
         ]);
     }
 
