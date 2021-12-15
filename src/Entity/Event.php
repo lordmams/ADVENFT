@@ -39,6 +39,16 @@ class Event
      */
     private $Calendars;
 
+    public static function wasCreated(string $title, $startDate, $endDate):self
+    {
+        $event = new self;
+        $event->setTitle($title);
+        $event->setStartDate($startDate);
+        $event->setEndDate($endDate);
+
+        return $event;
+    }
+
     public function __construct()
     {
         $this->Calendars = new ArrayCollection();
