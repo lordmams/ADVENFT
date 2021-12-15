@@ -15,7 +15,7 @@ class EventFixtures extends Fixture
         $event = new Event();
         $event->setStartDate(new \DateTime('2021-12-01'));
         $event->setEndDate(new \DateTime('2021-12-24'));
-        $event->setTitle("Calendrier de l'avent");
+        $event->setTitle("Noël");
 
         $this->addReference(self::CHRISTMAS_EVENT, $event);
         $manager->persist($event);
