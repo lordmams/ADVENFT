@@ -33,6 +33,12 @@ class Calendar
      */
     private $hasDonation;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="calendars")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $eventId;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +76,18 @@ class Calendar
     public function setHasDonation(bool $hasDonation): self
     {
         $this->hasDonation = $hasDonation;
+
+        return $this;
+    }
+
+    public function getEventId(): ?Event
+    {
+        return $this->eventId;
+    }
+
+    public function setEventId(?Event $eventId): self
+    {
+        $this->eventId = $eventId;
 
         return $this;
     }
