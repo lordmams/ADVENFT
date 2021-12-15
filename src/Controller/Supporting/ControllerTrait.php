@@ -3,10 +3,16 @@ namespace App\Controller\Supporting;
 
 use DateTime;
 use DateTimeInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 
 trait ControllerTrait
 {
+    
+       public function __construct(
+      
+        private EntityManagerInterface $em,
+    ) { }
 
     public function convertTime(string $date): DateTimeInterface{
         $newDate = DateTime::createFromFormat('Y-m-d H:i:s',$date);
@@ -14,14 +20,13 @@ trait ControllerTrait
     }
 
     public function addAndSave($entity){   
-        $em = $this->getDoctrine()->getManager(); 
-        $em->persist($entity);
-        $em->flush();
+         $this->em->persist($entity);
+         $this->em->flush();
     }
 
     public function deleteAndSave($entity){ 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($entity);
-        $em->flush();
+       
+          $this->em->remove($entity);
+          $this->em->flush();
     }
 }
