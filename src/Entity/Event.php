@@ -6,6 +6,7 @@ use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=EventRepository::class)
@@ -16,21 +17,25 @@ class Event
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"calendar_list"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"calendar_list"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"calendar_list"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"calendar_list"})
      */
     private $endDate;
 
