@@ -51,8 +51,8 @@ Data à transmettre :
 
 ```json
 {
-    title: "Le titre du calendrier",
-    eventId: "1",
-    hasDonation: "1"
+    "title": "Le titre du calendrier",
+    "eventId": "1",
+    "hasDonation": "1"
 }
 ```
